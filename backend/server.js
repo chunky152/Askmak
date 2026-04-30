@@ -7,6 +7,20 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
+function resolveCookieSecret() {
+    const raw = process.env.COOKIE_SECRET;
+    if (typeof raw === 'string' && raw.trim()) {
+        return raw.trim();
+    }
+    if (process.env.NODE_ENV === 'production') {
+        throw new Error('COOKIE_SECRET must be set in .env for production');
+    }
+    console.warn(
+        'COOKIE_SECRET not set: using insecure dev default; set COOKIE_SECRET in .env (see .env.example)'
+    );
+    return 'askmak_dev_cookie_secret_not_for_production';
+}
+
 const db = require('./config/db');
 const errorHandler = require('./middleware/error');
 const { guestMiddleware } = require('./middleware/guest');
@@ -40,7 +54,7 @@ app.use(cors({
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser(resolveCookieSecret()));
 
 const publicDir = path.join(__dirname, '..', 'frontend', 'public');
 
