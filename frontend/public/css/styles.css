@@ -454,3 +454,76 @@ option {
   background: rgba(0, 166, 81, 0.42);
 }
 
+/* —— Admin dashboard: brand atmosphere (mak dark / green / gold / red) —— */
+.admin-dashboard-bg {
+  position: relative;
+  isolation: isolate;
+}
+
+.admin-dashboard-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 60% at 100% 0%, rgba(0, 166, 81, 0.04), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 0% 100%, rgba(0, 0, 0, 0.02), transparent 45%);
+}
+
+.dark .admin-dashboard-bg::before {
+  background:
+    radial-gradient(ellipse 85% 55% at 100% 0%, rgba(0, 166, 81, 0.06), transparent 52%),
+    radial-gradient(ellipse 80% 55% at 20% 100%, rgba(255, 255, 255, 0.02), transparent 50%);
+  opacity: 1;
+}
+
+.admin-dashboard-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+#admin-main.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(35, 31, 32, 0.2);
+}
+
+.dark #admin-main.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 166, 81, 0.28);
+}
+
+.dark #admin-main.thin-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 166, 81, 0.42);
+}
+
+/* Admin: green sidebar shell */
+.admin-sidebar {
+  background: linear-gradient(165deg, #00a651 0%, #008f47 42%, #00763c 100%);
+}
+
+.nav-esc-badge:not(.hidden) {
+  background: #ed1c24;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.admin-nav[data-active='true'] .nav-esc-badge:not(.hidden) {
+  background: #ed1c24;
+  color: #fff;
+}
+
+/* Feather icons — light on green sidebar; green on active (white) pill */
+.admin-sidebar-feather {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: rgba(255, 255, 255, 0.92);
+  stroke: currentColor;
+}
+
+.admin-nav[data-active='true'] .admin-sidebar-feather {
+  color: #00a651;
+}
+
+#admin-sidebar a[href='/chat.html']:hover .admin-sidebar-feather,
+#admin-logout:hover .admin-sidebar-feather {
+  color: #fff;
+}

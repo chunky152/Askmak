@@ -9,62 +9,128 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body class="font-sans bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
+<body class="font-sans min-h-screen bg-zinc-50 text-zinc-900 dark:bg-chat-canvas dark:text-zinc-100">
 
-<div id="admin-root" class="flex h-screen overflow-hidden">
-  <aside id="admin-sidebar" class="w-[260px] bg-mak-dark text-white flex flex-col shrink-0 z-40 fixed lg:static inset-y-0 left-0 -translate-x-full lg:translate-x-0 transition-transform duration-300">
-    <div class="h-14 px-4 flex items-center justify-between border-b border-white/10 shrink-0">
-      <span class="font-bold text-lg tracking-tight">AskMak <span class="text-mak-green">Admin</span></span>
-      <button type="button" id="sidebar-close" class="lg:hidden text-white/70 hover:text-white border-none bg-transparent cursor-pointer p-1">&times;</button>
+<div id="admin-root" class="flex h-screen overflow-hidden admin-dashboard-bg">
+  <aside id="admin-sidebar" class="admin-sidebar w-[280px] flex flex-col shrink-0 z-40 fixed lg:static inset-y-0 left-0 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out shadow-[8px_0_40px_-12px_rgba(0,0,0,0.25)]">
+    <div class="px-4 pt-5 pb-4 flex items-center justify-between shrink-0">
+      <a href="/chat.html" class="flex items-center gap-3 no-underline hover:opacity-95 transition group">
+        <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white shadow-md shadow-black/10 ring-1 ring-white/50 shrink-0 overflow-hidden">
+          <img src="/assets/mak_logo.png" alt="" class="h-8 w-auto object-contain" width="32" height="32">
+        </span>
+        <div class="leading-tight min-w-0">
+          <div class="font-bold text-[16px] tracking-tight text-white">
+            Ask<span class="font-extrabold">Mak</span>
+            <span class="text-white/80 font-semibold text-[14px]"> Admin</span>
+          </div>
+          <div class="text-[11px] text-white/55 font-medium">Control center</div>
+        </div>
+      </a>
+      <button type="button" id="sidebar-close" class="lg:hidden text-white/80 hover:text-white border-none bg-white/10 hover:bg-white/20 cursor-pointer p-2 rounded-xl transition" aria-label="Close menu">&times;</button>
     </div>
-    <nav class="flex-1 overflow-y-auto sidebar-scroll py-3 text-sm">
-      <button type="button" data-section="overview" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Overview</button>
-      <button type="button" data-section="escalations" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10 flex justify-between items-center">
-        Escalations <span id="nav-esc-count" class="text-xs bg-mak-red px-1.5 py-0.5 rounded hidden">0</span>
+
+    <nav class="flex-1 overflow-y-auto sidebar-scroll px-3 pb-4 text-[13px] font-medium space-y-1">
+      <button type="button" data-section="overview" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="pie-chart" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Overview
       </button>
-      <button type="button" data-section="unresolved" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Unresolved</button>
-      <button type="button" data-section="users" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Users</button>
-      <button type="button" data-section="conversations" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Conversations</button>
-      <button type="button" data-section="feedback" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Feedback</button>
-      <button type="button" data-section="documents" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Knowledge base</button>
-      <button type="button" data-section="reference" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Reference images</button>
-      <button type="button" data-section="ingest" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Ingestion</button>
-      <button type="button" data-section="settings" class="admin-nav w-full text-left px-4 py-2.5 hover:bg-white/10 border-l-4 border-transparent data-[active]:border-mak-red data-[active]:bg-white/10">Settings</button>
+      <button type="button" data-section="escalations" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center justify-between gap-2 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <span class="inline-flex items-center gap-3 min-w-0">
+          <i data-feather="alert-circle" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+          Escalations
+        </span>
+        <span id="nav-esc-count" class="nav-esc-badge text-[11px] px-2 py-0.5 rounded-lg font-bold tabular-nums shrink-0 hidden">0</span>
+      </button>
+      <button type="button" data-section="unresolved" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="help-circle" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Unresolved
+      </button>
+      <button type="button" data-section="users" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="users" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Users
+      </button>
+      <button type="button" data-section="conversations" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="message-square" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Conversations
+      </button>
+      <button type="button" data-section="feedback" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="thumbs-up" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Feedback
+      </button>
+      <button type="button" data-section="documents" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="book-open" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Knowledge base
+      </button>
+      <button type="button" data-section="reference" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="image" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Reference images
+      </button>
+      <button type="button" data-section="ingest" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="download-cloud" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Ingestion
+      </button>
+      <button type="button" data-section="settings" class="admin-nav w-full text-left px-3.5 py-3 rounded-2xl text-white/90 hover:bg-white/12 hover:text-white transition-all flex items-center gap-3 data-[active]:bg-white data-[active]:text-mak-green data-[active]:shadow-lg">
+        <i data-feather="settings" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+        Settings
+      </button>
     </nav>
-    <div class="p-3 border-t border-white/10 text-xs text-white/60 shrink-0">
-      <div id="admin-user-label" class="truncate mb-2"></div>
-      <a href="/chat.html" class="text-mak-green hover:underline">Open chat</a>
-      <button type="button" id="admin-logout" class="block mt-2 text-white/80 hover:text-white bg-transparent border-none cursor-pointer p-0">Log out</button>
+
+    <div class="p-4 pt-3 mt-auto shrink-0 border-t border-white/10 bg-black/10">
+      <div id="admin-user-label" class="truncate mb-3 text-[13px] font-semibold text-white pl-1"></div>
+      <div class="flex flex-col gap-1">
+        <a href="/chat.html" class="text-white hover:bg-white/10 font-medium no-underline inline-flex items-center gap-3 px-3 py-2.5 rounded-xl transition">
+          <i data-feather="message-circle" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+          Open chat
+        </a>
+        <button type="button" id="admin-logout" class="w-full text-left text-white/75 hover:text-white hover:bg-white/10 font-medium bg-transparent border-none cursor-pointer inline-flex items-center gap-3 px-3 py-2.5 rounded-xl transition">
+          <i data-feather="log-out" class="admin-sidebar-feather shrink-0" aria-hidden="true"></i>
+          Log out
+        </button>
+      </div>
     </div>
   </aside>
 
-  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/50 z-30 lg:hidden"></div>
+  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-mak-dark/40 backdrop-blur-sm z-30 lg:hidden"></div>
 
-  <div class="flex-1 flex flex-col min-w-0">
-    <header class="h-14 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-4 shrink-0">
+  <div class="flex-1 flex flex-col min-w-0 relative">
+    <header class="h-14 shrink-0 flex items-center justify-between px-4 md:px-6
+      bg-white/95 dark:bg-chat-raised/95 backdrop-blur-md
+      border-b border-zinc-200/70 dark:border-white/[0.06] text-mak-dark dark:text-white">
       <div class="flex items-center gap-3">
-        <button type="button" id="sidebar-open" class="lg:hidden p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
+        <button type="button" id="sidebar-open" class="lg:hidden p-2 rounded-xl ring-1 ring-zinc-200/80 dark:ring-white/[0.08] bg-white dark:bg-chat-raised text-mak-dark dark:text-white shadow-sm hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition cursor-pointer" aria-label="Open menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
         </button>
-        <h1 id="section-title" class="text-lg font-semibold text-mak-dark dark:text-white">Overview</h1>
+        <div>
+          <h1 id="section-title" class="text-lg font-bold tracking-tight text-mak-dark dark:text-white">Overview</h1>
+          <p class="text-[11px] text-mak-dark/45 dark:text-zinc-400 font-medium hidden sm:block">Makerere · AskMak administration</p>
+        </div>
       </div>
-      <button type="button" id="theme-toggle-admin" class="text-sm text-gray-500 hover:text-mak-green border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1.5 bg-white dark:bg-gray-800 cursor-pointer">Theme</button>
+      <button type="button" id="theme-toggle-admin" class="inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl text-xs font-semibold
+        text-mak-dark/70 hover:text-mak-dark dark:text-white/70 dark:hover:text-white
+        ring-1 ring-zinc-200/80 dark:ring-white/[0.08] bg-white dark:bg-chat-raised
+        hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition shadow-sm cursor-pointer">
+        <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-100 dark:bg-chat-canvas text-mak-green">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        </span>
+        Theme
+      </button>
     </header>
 
-    <main id="admin-main" class="flex-1 overflow-y-auto thin-scroll p-4 md:p-6"></main>
+    <main id="admin-main" class="flex-1 overflow-y-auto thin-scroll p-4 md:p-6 lg:p-8"></main>
   </div>
 </div>
 
-<div id="admin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-  <div class="bg-white dark:bg-gray-900 rounded-xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-xl flex flex-col">
-    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800 shrink-0">
-      <h3 id="modal-title" class="font-semibold"></h3>
-      <button type="button" id="modal-close" class="text-2xl leading-none text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border-none bg-transparent cursor-pointer">&times;</button>
+<div id="admin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-mak-dark/45 backdrop-blur-sm animate-fade-in">
+  <div class="bg-white dark:bg-chat-raised rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl flex flex-col ring-1 ring-black/[0.06] dark:ring-white/[0.08]">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-zinc-100 dark:border-white/[0.08] shrink-0">
+      <h3 id="modal-title" class="font-bold text-mak-dark dark:text-white tracking-tight"></h3>
+      <button type="button" id="modal-close" class="text-xl leading-none w-10 h-10 rounded-xl text-mak-dark/40 hover:text-mak-dark hover:bg-zinc-100 dark:text-white/45 dark:hover:text-white dark:hover:bg-white/[0.06] border-none bg-transparent cursor-pointer transition" aria-label="Close">&times;</button>
     </div>
-    <div id="modal-body" class="p-4 overflow-y-auto thin-scroll flex-1 text-sm"></div>
+    <div id="modal-body" class="p-5 overflow-y-auto thin-scroll flex-1 text-sm text-zinc-800 dark:text-zinc-200"></div>
   </div>
 </div>
 
+<script src="https://unpkg.com/feather-icons@4.29.2/dist/feather.min.js"></script>
 <script src="/js/theme.js"></script>
 <script src="/js/utils.js"></script>
 <script src="/js/admin.js"></script>
