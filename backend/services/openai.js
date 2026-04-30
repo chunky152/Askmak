@@ -1,12 +1,10 @@
-const OpenAI = require('openai');
 const db = require('../config/db');
 const storage = require('./storage');
 const { hybridSearch, formatContextForLLM } = require('./embedding');
+const { getOpenAI } = require('./openaiClient');
 const { getToolSchemas, executeToolCall } = require('./mcp/registry');
 const { stripLatestUserTurn, buildStandaloneSearchQuery } = require('./searchQuery');
 const { logRetrieval } = require('./ragLog');
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 function buildSystemPrompt(memories = []) {
     let prompt = `You are AskMak, the official AI support assistant for Makerere University, Uganda's oldest and most prestigious public university. You help students, prospective students, and visitors with questions about admissions, programs, fees, academic calendar, campus life, student services, and university policies.
@@ -146,7 +144,7 @@ async function streamResponse(chatId, userContent, userId, imageKey, onData) {
     const maxToolDepth = 3;
 
     async function callOpenAI(msgs) {
-        const stream = await openai.chat.completions.create({
+        const stream = await getOpenAI().chat.completions.create({
             model: process.env.OPENAI_MODEL || 'gpt-4o',
             messages: msgs,
             tools: tools.length ? tools : undefined,
@@ -242,7 +240,7 @@ async function streamResponse(chatId, userContent, userId, imageKey, onData) {
 
 async function generateTitle(content) {
     try {
-        const response = await openai.chat.completions.create({
+        const response = await getOpenAI().chat.completions.create({
             model: 'gpt-4o-mini',
             messages: [
                 { role: 'system', content: 'Generate a concise 4-6 word title for this conversation. Return only the title, no quotes.' },

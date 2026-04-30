@@ -76,6 +76,10 @@ async function start() {
         console.warn('Database not available:', err.message);
     }
 
+    if (!process.env.OPENAI_API_KEY || !String(process.env.OPENAI_API_KEY).trim()) {
+        console.warn('OPENAI_API_KEY is not set: chat completions and embedding API calls will fail until you add it to .env');
+    }
+
     cron.start();
 
     app.listen(PORT, '127.0.0.1', () => {
